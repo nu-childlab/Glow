@@ -12,6 +12,8 @@ from psychopy import visual,logging,event,core
 
 def main(): 
 
+	#test comment
+
 	# subject = str(raw_input("Subject Number: "))
 	# subject = subjectCheck(subject)
 	# print subject
