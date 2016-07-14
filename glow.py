@@ -24,32 +24,6 @@ def main():
 
 	framerate = win.getActualFrameRate()
 
-	# Measuring framerate
-	# nIntervals = 100
-	# progBar = visual.GratingStim(win, tex=None, mask=None,
-	#     size=[0, 0.05], color='red', pos=[0, -0.9], autoLog=False)
-	# myStim = visual.GratingStim(win, tex='sin', mask='gauss',
-	#     size=300, sf=0.05, units='pix', autoLog=False)
-	# win.recordFrameIntervals = True
-	# for frameN in range(nIntervals + 1):
-	#     progBar.setSize([2.0 * frameN/nIntervals, 0.05])
-	#     progBar.draw()
-	#     myStim.setPhase(0.1, '+')
-	#     myStim.draw()
-	#     if event.getKeys():
-	#         print 'stopped early'
-	#         break
-	#     win.logOnFlip(msg='frame=%i' %frameN, level=logging.EXP)
-	#     win.flip()
-	# win.fullscr = False
-
-	# # calculate some values
-	# intervalsMS = pylab.array(win.frameIntervals) * 1000
-	# ifi = pylab.mean(intervalsMS)
-	# print ifi
-
-	#The above calculations mean that the framerate is stored in ifi
-	#If you'd like to skip it, just comment out that code and set ifi below
 	#ifi = .0169
 	ifi = 1/framerate
 
