@@ -10,7 +10,7 @@ import math
 import numpy as np
 from psychopy import visual,logging,event,core
 
-def main(): 
+def main():
 
 	# subject = str(raw_input("Subject Number: "))
 	# subject = subjectCheck(subject)
@@ -74,15 +74,21 @@ def main():
 	pos1 = -scrwidth/5
 	pos2 = -pos1
 
-	triangle1 = visual.ShapeStim(win,size=[sqsize/2,sqsize], lineColor=[175,175,175],fillColor=[255,0,0], pos=[pos1,-sqsize/4], units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
-	square1 = visual.Rect(win,lineColor=[175,175,175],fillColor=[0,255,0],size=[sqsize,sqsize],pos=[pos1,0],units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
-	circle1 = visual.Circle(win, lineColor=[175,175,175], fillColor=[0,0,255], radius=sqsize/4, pos=[pos1,0], units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
+	triangle1 = visual.ShapeStim(win,size=[sqsize/2,sqsize], lineColor=[175,175,175],fillColor=[255,0,0],
+		pos=[pos1,-sqsize/4], units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
+	square1 = visual.Rect(win,lineColor=[175,175,175],fillColor=[0,255,0],size=[sqsize,sqsize],
+		pos=[pos1,0],units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
+	circle1 = visual.Circle(win, lineColor=[175,175,175], fillColor=[0,0,255], radius=sqsize/4,
+		pos=[pos1,0], units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
 
-	triangle2 = visual.ShapeStim(win,size=[sqsize/2,sqsize], lineColor=[175,175,175],fillColor=[255,0,0], pos=[pos2,-sqsize/4], units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
-	square2 = visual.Rect(win,lineColor=[175,175,175],fillColor=[0,255,0],size=[sqsize,sqsize],pos=[pos2,0],units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
-	circle2 = visual.Circle(win, lineColor=[175,175,175], fillColor=[0,0,255], radius=sqsize/4, pos=[pos2,0], units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
-	
-	
+	triangle2 = visual.ShapeStim(win,size=[sqsize/2,sqsize], lineColor=[175,175,175],fillColor=[255,0,0],
+		pos=[pos2,-sqsize/4], units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
+	square2 = visual.Rect(win,lineColor=[175,175,175],fillColor=[0,255,0],size=[sqsize,sqsize],
+		pos=[pos2,0],units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
+	circle2 = visual.Circle(win, lineColor=[175,175,175], fillColor=[0,0,255], radius=sqsize/4,
+		pos=[pos2,0], units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
+
+
 
 	parameters = []
 	for row in parametersreader:
@@ -94,16 +100,10 @@ def main():
 		Ashape = row["A Shape"]
 		Acolor = row["A Color"]
 		Aglow = row["A Glow"]
-		Anumber = row["A Number"]
-		Atime = row["A Time"]
-		Arate = row["A Rate"]
 
 		Bshape = row["B Shape"]
 		Bcolor = row["B Color"]
 		Bglow = row["B Glow"]
-		Bnumber = row["B Number"]
-		Btime = row["B Time"]
-		Brate = row["B Rate"]
 
 		if re.search("triangle", Ashape, re.IGNORECASE):
 			triangle1.setAutoDraw(1)
@@ -136,13 +136,13 @@ def main():
 			raise ValueError("Error in row " + str(rowcount) + ": B shape is unidentified. Ensure that the column's calue is square, triangle, or circle.")
 
 		while not event.getKeys(keyList=['q']):
-			# triangle1.draw()  
-			# square1.draw()  
+			# triangle1.draw()
+			# square1.draw()
 			# circle1.draw()
-			# triangle2.draw()  
-			# square2.draw()  
+			# triangle2.draw()
+			# square2.draw()
 			# circle2.draw()
-			win.flip() 	
+			win.flip()
 
 		rowcount += 1
 
@@ -156,6 +156,9 @@ def subjectCheck(subject):
 		print "Invalid subject id! An id should be an 's' followed by only numbers."
 		return subjectCheck(input("Please enter a valid subject id: "))
 
+def activate_glow(shape, color, add_or_sub):
+
+	return
 
 
 
@@ -166,4 +169,3 @@ def subjectCheck(subject):
 
 if __name__ == "__main__":
     main()
-
