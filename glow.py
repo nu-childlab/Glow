@@ -21,6 +21,7 @@ def main():
 	scrheight = 720
 	win = visual.Window([scrwidth,scrheight], units='pix', monitor='testMonitor', color=[175,175,175], colorSpace="rgb255")
 
+	framerate = win.getActualFrameRate()
 
 	# Measuring framerate
 	# nIntervals = 100
@@ -48,7 +49,8 @@ def main():
 
 	#The above calculations mean that the framerate is stored in ifi
 	#If you'd like to skip it, just comment out that code and set ifi below
-	ifi = .0169
+	#ifi = .0169
+	ifi = 1/framerate
 
 	# read parameters file and open response file below
 	parametersfile = open('glowparameters.csv', 'rU')
