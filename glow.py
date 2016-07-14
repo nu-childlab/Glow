@@ -9,6 +9,7 @@ import csv
 import math
 import numpy as np
 from psychopy import visual,logging,event,core
+from color_functions import *
 
 def main():
 
