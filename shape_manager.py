@@ -12,8 +12,12 @@ from psychopy import visual,logging,event,core
 from color_functions import *
 
 class shape_Manager():
-
+    """A class to manage the glowing shapes and their colors.
+    There's a lot of class variables. Maybe I'll list them later."""
     def __init__(self, win, sqsize, pos1, pos2, background_color):
+        """Creates the shape stimuli. They'll be modified instead of recreated
+        each time in order to save time.
+        This ONLY happens once per run of the experiment."""
         self.left_triangle = visual.ShapeStim(win,size=[sqsize/2,sqsize], lineColor=background_color,fillColor=[255,0,0],
             pos=[pos1,-sqsize/4], units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
         self.left_square = visual.Rect(win,lineColor=background_color,fillColor=[0,255,0],size=[sqsize,sqsize],
@@ -32,8 +36,11 @@ class shape_Manager():
         self.right_frame_count = 0
         self.left_cycle_end = 100
         self.right_cycle_end = 100
+        return
 
     def shape_change(self, left_shape, right_shape):
+        """Changes the active left and right shapes for the trial.
+        These are the shapes that will be automatically drawn."""
         if re.search("triangle", left_shape, re.IGNORECASE):
             self.left_triangle.setAutoDraw(1)
             self.left_square.setAutoDraw(0)
@@ -69,8 +76,12 @@ class shape_Manager():
             self.right_active_shape = self.right_circle
         else:
             raise ValueError("Error in row " + str(rowcount) + ": B shape is unidentified. Ensure that the column's value is square, triangle, or circle.")
+        return
 
     def set_glow(self,left_glow, right_glow):
+        """Sets the glow values for the trial. 1 means it will glow through a
+        range of colors. 0 means it will flash between full opacity and no
+        opacity."""
         if left_glow:
             self.left_glow = 1
         else:
@@ -79,8 +90,20 @@ class shape_Manager():
             self.right_glow = 1
         else:
             self.right_glow = 0
+        return
+
+    def set_colors(self, left_start_color, right_start_color, left_end_color, right_end_color):
+        self.left_start_color = left_start_color
+        self.right_start_color = right_start_color
+        self.left_end_color = left_end_color
+        self.right_end_color = right_end_color
+        self.left_active_shape.fillColor = left_start_color
+        self.right_active_shape.fillColor = right_start_color
 
     def generate_gradients(self,left_start_color, right_start_color, left_end_color, right_end_color):
+        """Generates color gradients for the left and right shapes.
+        The gradient variables become lists of lists, where each inner list
+        is an rgb tuple."""
         if self.left_glow:
             self.left_gradient = []
             gr = linear_gradient(left_start_color, left_end_color, 100)
@@ -95,12 +118,25 @@ class shape_Manager():
                 self.right_gradient.append([gr['r'][i], gr['g'][i], gr['b'][i]])
         else:
             self.right_gradient = right_color
-
-    def shape_glow(self, shape, gradient):
         return
 
-    def shape_flash(self, shape, color):
+    def shape_glow(self, shape, gradient, framecount):
+        shape.fillColor = gradient(framecount)
+        return
+
+    def shape_flash(self, shape, color, framecount, endcycle):
+        if framecount < round(endcycle/2):
+            shape.opacity = 1
+        else:
+            shape.opacity = 0
         return
 
     def animate_colors(self):
+        """Makes one step/frame in the color-changing animation.
+        It increments the shapes and changes their color according to the
+        gradient or whether it should be flashing or not."""
+        if self.left_glow:
+            self.shape_glow(self.left_active_shape, self.left_gradient, self.left_frame_count)
+        else:
+            self.shape_flash(self.left_active_shape, self.left_gradient, self.)
         return

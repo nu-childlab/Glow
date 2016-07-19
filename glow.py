@@ -76,15 +76,8 @@ def main():
 		sm.shape_change(left_shape,right_shape)
 		sm.set_glow(left_glow, right_glow)
 		sm.generate_gradients(left_start_color, right_start_color, left_end_color, right_end_color)
+		
 
-		##9E3923
-		# gr_red = gradient['r']
-		# gr_blue = gradient['b']
-		# gr_green = gradient['g']
-		# for c in range(0,10):
-		# 	circle1.fillColor = [gr_red[c], gr_green[c], gr_blue[c]]
-		# 	win.flip()
-		# 	time.sleep(2)
 		framecount = 0
 		while not event.getKeys(keyList=['q']):
 
