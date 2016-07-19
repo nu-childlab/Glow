@@ -19,8 +19,17 @@ def main():
 	# print subject
 
 	#2560, 1440
-	scrwidth = 1280
-	scrheight = 720
+	#1280, 720
+	scrwidth = 960
+	scrheight = 540
+	#the length of the square's sides; the other shapes are calculated to fit within the square.
+	#the length of the square = the diameter of the circle = the base and height of the triangle.
+	sqsize = scrwidth/5
+	#The positions are from the center of the screen, and mirror each other.
+	pos1 = -scrwidth/5
+	pos2 = -pos1
+	background_color = [175,175,175]
+
 	win = visual.Window([scrwidth,scrheight], units='pix', monitor='testMonitor', color=[175,175,175], colorSpace="rgb255")
 
 	framerate = win.getActualFrameRate()
@@ -43,35 +52,29 @@ def main():
 	#response: Anumber Arate Atime Acolor Aglow Bnumber Brate Btime Bcolor Bglow Ashape Bshape
 	#vertices=[[0,0],[25,-50],[-25,-50]]
 
-	#the length of the square's sides; the other shapes are calculated to fit within the square.
-	#the length of the square = the diameter of the circle = the base and height of the triangle.
-	sqsize = scrwidth/5
-	#The positions are from the center of the screen, and mirror each other.
-	pos1 = -scrwidth/5
-	pos2 = -pos1
-
-	triangle1 = visual.ShapeStim(win,size=[sqsize/2,sqsize], lineColor=[175,175,175],fillColor=[255,0,0],
-		pos=[pos1,-sqsize/4], units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
-	square1 = visual.Rect(win,lineColor=[175,175,175],fillColor=[0,255,0],size=[sqsize,sqsize],
-		pos=[pos1,0],units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
-	circle1 = visual.Circle(win, lineColor=[175,175,175], fillColor=[0,0,255], radius=sqsize/4,
-		pos=[pos1,0], units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
-
-	triangle2 = visual.ShapeStim(win,size=[sqsize/2,sqsize], lineColor=[175,175,175],fillColor=[255,0,0],
-		pos=[pos2,-sqsize/4], units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
-	square2 = visual.Rect(win,lineColor=[175,175,175],fillColor=[0,255,0],size=[sqsize,sqsize],
-		pos=[pos2,0],units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
-	circle2 = visual.Circle(win, lineColor=[175,175,175], fillColor=[0,0,255], radius=sqsize/4,
-		pos=[pos2,0], units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
-
-
-
+	# triangle1 = visual.ShapeStim(win,size=[sqsize/2,sqsize], lineColor=[175,175,175],fillColor=[255,0,0],
+	# 	pos=[pos1,-sqsize/4], units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
+	# square1 = visual.Rect(win,lineColor=[175,175,175],fillColor=[0,255,0],size=[sqsize,sqsize],
+	# 	pos=[pos1,0],units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
+	# circle1 = visual.Circle(win, lineColor=[175,175,175], fillColor=[0,0,255], radius=sqsize/4,
+	# 	pos=[pos1,0], units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
+	#
+	# triangle2 = visual.ShapeStim(win,size=[sqsize/2,sqsize], lineColor=[175,175,175],fillColor=[255,0,0],
+	# 	pos=[pos2,-sqsize/4], units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
+	# square2 = visual.Rect(win,lineColor=[175,175,175],fillColor=[0,255,0],size=[sqsize,sqsize],
+	# 	pos=[pos2,0],units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
+	# circle2 = visual.Circle(win, lineColor=[175,175,175], fillColor=[0,0,255], radius=sqsize/4,
+	# 	pos=[pos2,0], units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
+	#
+	#
+	#
 	parameters = []
 	for row in parametersreader:
-		parameters.append(row)
+	 	parameters.append(row)
 
 	random.shuffle(parameters)
 	rowcount = 2
+	sm = shape_Manager(win, sqsize, pos1, pos2, background_color)
 	for row in parameters:
 		Ashape = row["A Shape"]
 		Acolor = row["A Color"]
@@ -80,47 +83,48 @@ def main():
 		Bshape = row["B Shape"]
 		Bcolor = row["B Color"]
 		Bglow = row["B Glow"]
+	#
+	# 	if re.search("triangle", Ashape, re.IGNORECASE):
+	# 		triangle1.setAutoDraw(1)
+	# 		square1.setAutoDraw(0)
+	# 		circle1.setAutoDraw(0)
+	# 	elif re.search("square", Ashape, re.IGNORECASE):
+	# 		triangle1.setAutoDraw(0)
+	# 		square1.setAutoDraw(1)
+	# 		circle1.setAutoDraw(0)
+	# 	elif re.search("circle", Ashape, re.IGNORECASE):
+	# 		triangle1.setAutoDraw(0)
+	# 		square1.setAutoDraw(0)
+	# 		circle1.setAutoDraw(1)
+	# 	else:
+	# 		raise ValueError("Error in row " + str(rowcount) + ": A shape is unidentified. Ensure that the column's calue is square, triangle, or circle.")
+	#
+	# 	if re.search("triangle", Bshape, re.IGNORECASE):
+	# 		triangle2.setAutoDraw(1)
+	# 		square2.setAutoDraw(0)
+	# 		circle2.setAutoDraw(0)
+	# 	elif re.search("square", Bshape, re.IGNORECASE):
+	# 		triangle2.setAutoDraw(0)
+	# 		square2.setAutoDraw(1)
+	# 		circle2.setAutoDraw(0)
+	# 	elif re.search("circle", Bshape, re.IGNORECASE):
+	# 		triangle2.setAutoDraw(0)
+	# 		square2.setAutoDraw(0)
+	# 		circle2.setAutoDraw(1)
+	# 	else:
+	# 		raise ValueError("Error in row " + str(rowcount) + ": B shape is unidentified. Ensure that the column's calue is square, triangle, or circle.")
 
-		if re.search("triangle", Ashape, re.IGNORECASE):
-			triangle1.setAutoDraw(1)
-			square1.setAutoDraw(0)
-			circle1.setAutoDraw(0)
-		elif re.search("square", Ashape, re.IGNORECASE):
-			triangle1.setAutoDraw(0)
-			square1.setAutoDraw(1)
-			circle1.setAutoDraw(0)
-		elif re.search("circle", Ashape, re.IGNORECASE):
-			triangle1.setAutoDraw(0)
-			square1.setAutoDraw(0)
-			circle1.setAutoDraw(1)
-		else:
-			raise ValueError("Error in row " + str(rowcount) + ": A shape is unidentified. Ensure that the column's calue is square, triangle, or circle.")
-
-		if re.search("triangle", Bshape, re.IGNORECASE):
-			triangle2.setAutoDraw(1)
-			square2.setAutoDraw(0)
-			circle2.setAutoDraw(0)
-		elif re.search("square", Bshape, re.IGNORECASE):
-			triangle2.setAutoDraw(0)
-			square2.setAutoDraw(1)
-			circle2.setAutoDraw(0)
-		elif re.search("circle", Bshape, re.IGNORECASE):
-			triangle2.setAutoDraw(0)
-			square2.setAutoDraw(0)
-			circle2.setAutoDraw(1)
-		else:
-			raise ValueError("Error in row " + str(rowcount) + ": B shape is unidentified. Ensure that the column's calue is square, triangle, or circle.")
-
+		sm.shape_change(Ashape, Bshape)
 
 		gradient = linear_gradient("#FF5733", "#ff876e")
 		##9E3923
-		gr_red = gradient['r']
-		gr_blue = gradient['b']
-		gr_green = gradient['g']
-		for c in range(0,10):
-			circle1.fillColor = [gr_red[c], gr_green[c], gr_blue[c]]
-			win.flip()
-			time.sleep(2)
+		# gr_red = gradient['r']
+		# gr_blue = gradient['b']
+		# gr_green = gradient['g']
+		# for c in range(0,10):
+		# 	circle1.fillColor = [gr_red[c], gr_green[c], gr_blue[c]]
+		# 	win.flip()
+		# 	time.sleep(2)
 		while not event.getKeys(keyList=['q']):
 			# triangle1.draw()
 			# square1.draw()
