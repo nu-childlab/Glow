@@ -59,20 +59,16 @@ class shape_Manager():
         else:
             raise ValueError("Error in row " + str(rowcount) + ": B shape is unidentified. Ensure that the column's value is square, triangle, or circle.")
 
-        def set_glow(left_shape_glow, right_shape_glow):
-            self.left_shape_glow = 1
-            self.right_shape_glow = 0
+        def set_glow(left_glow, right_glow):
+            self.left_glow = 1
+            self.right_glow = 0
 
-        def generate_gradients():
-            if self.left_shape_glow:
+        def generate_gradients(left_start_color, right_start_color):
+            if self.left_glow:
                 self.left_gradient = []
             else:
-                self.left_gradient = []
-            if self.right_shape_glow:
+                self.left_gradient = [left_color]
+            if self.right_glow:
                 self.right_gradient = []
             else:
-
-
-
-        def change_color(self, left_color, right_color, left_gradient, right_gradient, framecount):
-            frames_per_cycle = len(left_gradient)
+                self.right_gradient[right_color]

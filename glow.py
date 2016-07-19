@@ -48,8 +48,10 @@ def main():
 	#create a timer
 	timer = core.Clock()
 
-	#parameters: Anumber Arate Atime Acolor Aglow Bnumber Brate Btime Bcolor Bglow Ashape Bshape
-	#response: Anumber Arate Atime Acolor Aglow Bnumber Brate Btime Bcolor Bglow Ashape Bshape
+	#parameters: Left Shape,Left Start Color, Left End Color,Left Glow,Left Variable 1,
+	#L1 time/rate/number,Left Variable 2,L2 time/rate/number,Right Shape,Right Start Color,Right End Color,
+	#Right Glow,Right Variable 1,R1 value type,Right Variable 2,R2 value type
+
 
 
 	parameters = []
@@ -61,15 +63,17 @@ def main():
 	sm = shape_Manager(win, sqsize, pos1, pos2, background_color)
 
 	for row in parameters:
-		Ashape = row["A Shape"]
-		Acolor = row["A Color"]
-		Aglow = row["A Glow"]
+		left_shape = row["Left Shape"]
+		left_start_color = row["Left Start Color"]
+		left_end_color = row["Left End Color"]
+		left_glow = row["Left Glow"]
 
-		Bshape = row["B Shape"]
-		Bcolor = row["B Color"]
-		Bglow = row["B Glow"]
+		right_shape = row["Right Shape"]
+		right_start_color = row["Right Start Color"]
+		right_end_color = row["Right End Color"]
+		right_glow = row["Right Glow"]
 
-		sm.shape_change(Ashape, Bshape)
+		sm.shape_change(left_shape,right_shape)
 
 		gradient = linear_gradient("#FF5733", "#ff876e")
 		##9E3923
