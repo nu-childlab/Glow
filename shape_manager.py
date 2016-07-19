@@ -28,11 +28,6 @@ class shape_Manager():
         self.right_circle = visual.Circle(win, lineColor=background_color, fillColor=[0,0,255], radius=sqsize/4,
             pos=[pos2,0], units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
 
-        self.left_shape_glow = 1
-        self.right_shape_glow = 0
-        self.left_gradient = []
-        self.right_gradient = []
-
     def shape_change(self, left_shape, right_shape):
         if re.search("triangle", left_shape, re.IGNORECASE):
             self.left_triangle.setAutoDraw(1)
@@ -64,4 +59,20 @@ class shape_Manager():
         else:
             raise ValueError("Error in row " + str(rowcount) + ": B shape is unidentified. Ensure that the column's value is square, triangle, or circle.")
 
-        def init_color(self, left_color, right_color):
+        def set_glow(left_shape_glow, right_shape_glow):
+            self.left_shape_glow = 1
+            self.right_shape_glow = 0
+
+        def generate_gradients():
+            if self.left_shape_glow:
+                self.left_gradient = []
+            else:
+                self.left_gradient = []
+            if self.right_shape_glow:
+                self.right_gradient = []
+            else:
+
+
+
+        def change_color(self, left_color, right_color, left_gradient, right_gradient, framecount):
+            frames_per_cycle = len(left_gradient)
