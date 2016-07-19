@@ -12,6 +12,7 @@ from psychopy import visual,logging,event,core
 from color_functions import *
 
 class shape_Manager():
+
     def __init__(self, win, sqsize, pos1, pos2, background_color):
         self.left_triangle = visual.ShapeStim(win,size=[sqsize/2,sqsize], lineColor=background_color,fillColor=[255,0,0],
             pos=[pos1,-sqsize/4], units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
@@ -27,6 +28,11 @@ class shape_Manager():
         self.right_circle = visual.Circle(win, lineColor=background_color, fillColor=[0,0,255], radius=sqsize/4,
             pos=[pos2,0], units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
 
+        self.left_shape_glow = 1
+        self.right_shape_glow = 0
+        self.left_gradient = []
+        self.right_gradient = []
+
     def shape_change(self, left_shape, right_shape):
         if re.search("triangle", left_shape, re.IGNORECASE):
             self.left_triangle.setAutoDraw(1)
@@ -41,7 +47,7 @@ class shape_Manager():
             self.left_square.setAutoDraw(0)
             self.left_circle.setAutoDraw(1)
         else:
-            raise ValueError("Error in row " + str(rowcount) + ": A shape is unidentified. Ensure that the column's calue is square, triangle, or circle.")
+            raise ValueError("Error in row " + str(rowcount) + ": A shape is unidentified. Ensure that the column's value is square, triangle, or circle.")
 
         if re.search("triangle", right_shape, re.IGNORECASE):
             self.right_triangle.setAutoDraw(1)
@@ -56,4 +62,6 @@ class shape_Manager():
             self.right_square.setAutoDraw(0)
             self.right_circle.setAutoDraw(1)
         else:
-            raise ValueError("Error in row " + str(rowcount) + ": B shape is unidentified. Ensure that the column's calue is square, triangle, or circle.")
+            raise ValueError("Error in row " + str(rowcount) + ": B shape is unidentified. Ensure that the column's value is square, triangle, or circle.")
+
+        def init_color(self, left_color, right_color):
