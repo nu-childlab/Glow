@@ -10,6 +10,7 @@ import math
 import numpy as np
 from psychopy import visual,logging,event,core
 from color_functions import *
+from shape_manager import shape_Manager
 
 def main():
 
@@ -110,6 +111,16 @@ def main():
 		else:
 			raise ValueError("Error in row " + str(rowcount) + ": B shape is unidentified. Ensure that the column's calue is square, triangle, or circle.")
 
+
+		gradient = linear_gradient("#FF5733", "#ff876e")
+		##9E3923
+		gr_red = gradient['r']
+		gr_blue = gradient['b']
+		gr_green = gradient['g']
+		for c in range(0,10):
+			circle1.fillColor = [gr_red[c], gr_green[c], gr_blue[c]]
+			win.flip()
+			time.sleep(2)
 		while not event.getKeys(keyList=['q']):
 			# triangle1.draw()
 			# square1.draw()
@@ -117,6 +128,7 @@ def main():
 			# triangle2.draw()
 			# square2.draw()
 			# circle2.draw()
+
 			win.flip()
 
 		rowcount += 1
