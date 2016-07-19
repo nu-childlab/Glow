@@ -74,8 +74,9 @@ def main():
 		right_glow = row["Right Glow"]
 
 		sm.shape_change(left_shape,right_shape)
+		sm.set_glow(left_glow, right_glow)
+		sm.generate_gradients(left_start_color, right_start_color, left_end_color, right_end_color)
 
-		gradient = linear_gradient("#FF5733", "#ff876e")
 		##9E3923
 		# gr_red = gradient['r']
 		# gr_blue = gradient['b']
