@@ -20,8 +20,8 @@ def main():
 
 	#2560, 1440
 	#1280, 720
-	scrwidth = 960
-	scrheight = 540
+	scrwidth = 1280
+	scrheight = 720
 	#the length of the square's sides; the other shapes are calculated to fit within the square.
 	#the length of the square = the diameter of the circle = the base and height of the triangle.
 	sqsize = scrwidth/5
@@ -66,23 +66,28 @@ def main():
 		left_shape = row["Left Shape"]
 		left_start_color = row["Left Start Color"]
 		left_end_color = row["Left End Color"]
-		left_glow = row["Left Glow"]
+		left_glow = int(row["Left Glow"])
 
 		right_shape = row["Right Shape"]
 		right_start_color = row["Right Start Color"]
 		right_end_color = row["Right End Color"]
-		right_glow = row["Right Glow"]
+		right_glow = int(row["Right Glow"])
 
-		sm.shape_change(left_shape,right_shape)
+		sm.shape_change(left_shape,right_shape, rowcount)
 		sm.set_glow(left_glow, right_glow)
+		sm.set_colors(left_start_color, right_start_color, left_end_color, right_end_color)
 		sm.generate_gradients(left_start_color, right_start_color, left_end_color, right_end_color)
-		
+
 
 		framecount = 0
-		while not event.getKeys(keyList=['q']):
-
+		# while not event.getKeys(keyList=['q']):
+		#
+		# 	win.flip()
+		# 	framecount += 1
+		temptime = max(sm.right_cycle_end, sm.left_cycle_end)
+		for x in range(0,temptime):
+			sm.animate_colors()
 			win.flip()
-			framecount += 1
 
 		rowcount += 1
 
@@ -95,15 +100,6 @@ def subjectCheck(subject):
 	else:
 		print "Invalid subject id! An id should be an 's' followed by only numbers."
 		return subjectCheck(input("Please enter a valid subject id: "))
-
-def activate_glow(shape, color, add_or_sub):
-
-	return
-
-
-
-
-
 
 
 

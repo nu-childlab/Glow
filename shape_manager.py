@@ -31,14 +31,9 @@ class shape_Manager():
             pos=[pos2,0],units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
         self.right_circle = visual.Circle(win, lineColor=background_color, fillColor=[0,0,255], radius=sqsize/4,
             pos=[pos2,0], units="pix", fillColorSpace="rgb255",lineColorSpace="rgb255")
-
-        self.left_frame_count = 0
-        self.right_frame_count = 0
-        self.left_cycle_end = 100
-        self.right_cycle_end = 100
         return
 
-    def shape_change(self, left_shape, right_shape):
+    def shape_change(self, left_shape, right_shape, rowcount):
         """Changes the active left and right shapes for the trial.
         These are the shapes that will be automatically drawn."""
         if re.search("triangle", left_shape, re.IGNORECASE):
@@ -76,6 +71,12 @@ class shape_Manager():
             self.right_active_shape = self.right_circle
         else:
             raise ValueError("Error in row " + str(rowcount) + ": B shape is unidentified. Ensure that the column's value is square, triangle, or circle.")
+
+
+        self.left_frame_count = 0
+        self.right_frame_count = 0
+        self.left_cycle_end = 100
+        self.right_cycle_end = 100
         return
 
     def set_glow(self,left_glow, right_glow):
@@ -93,12 +94,12 @@ class shape_Manager():
         return
 
     def set_colors(self, left_start_color, right_start_color, left_end_color, right_end_color):
-        self.left_start_color = left_start_color
-        self.right_start_color = right_start_color
-        self.left_end_color = left_end_color
-        self.right_end_color = right_end_color
-        self.left_active_shape.fillColor = left_start_color
-        self.right_active_shape.fillColor = right_start_color
+        self.left_start_color = hex_to_RGB(left_start_color)
+        self.right_start_color = hex_to_RGB(right_start_color)
+        self.left_end_color = hex_to_RGB(left_end_color)
+        self.right_end_color = hex_to_RGB(right_end_color)
+        self.left_active_shape.fillColor = hex_to_RGB(left_start_color)
+        self.right_active_shape.fillColor = hex_to_RGB(right_start_color)
 
     def generate_gradients(self,left_start_color, right_start_color, left_end_color, right_end_color):
         """Generates color gradients for the left and right shapes.
@@ -106,29 +107,31 @@ class shape_Manager():
         is an rgb tuple."""
         if self.left_glow:
             self.left_gradient = []
-            gr = linear_gradient(left_start_color, left_end_color, 100)
+            gr = linear_gradient(left_start_color, left_end_color, 50)
             for i in range(0, len(gr['r'])):
                 self.left_gradient.append([gr['r'][i], gr['g'][i], gr['b'][i]])
+            self.left_gradient = self.left_gradient + self.left_gradient[::-1]
         else:
-            self.left_gradient = left_color
+            self.left_gradient = left_start_color
         if self.right_glow:
             self.right_gradient = []
-            gr = linear_gradient(right_start_color, right_end_color, 100)
+            gr = linear_gradient(right_start_color, right_end_color, 50)
             for i in range(0, len(gr['r'])):
                 self.right_gradient.append([gr['r'][i], gr['g'][i], gr['b'][i]])
+            self.right_gradient = self.right_gradient + self.right_gradient[::-1]
         else:
-            self.right_gradient = right_color
+            self.right_gradient = right_start_color
         return
 
     def shape_glow(self, shape, gradient, framecount):
-        shape.fillColor = gradient(framecount)
+        shape.setFillColor(gradient[framecount])
         return
 
     def shape_flash(self, shape, color, framecount, endcycle):
         if framecount < round(endcycle/2):
-            shape.opacity = 1
+            shape.setOpacity(1)
         else:
-            shape.opacity = 0
+            shape.setOpacity(0)
         return
 
     def animate_colors(self):
@@ -138,5 +141,22 @@ class shape_Manager():
         if self.left_glow:
             self.shape_glow(self.left_active_shape, self.left_gradient, self.left_frame_count)
         else:
-            self.shape_flash(self.left_active_shape, self.left_gradient, self.)
+            self.shape_flash(self.left_active_shape, self.left_gradient, self.left_frame_count, self.left_cycle_end)
+
+        if self.right_glow:
+            #print "right glow"
+            self.shape_glow(self.right_active_shape, self.right_gradient, self.right_frame_count)
+        else:
+            self.shape_flash(self.right_active_shape, self.right_gradient, self.right_frame_count, self.right_cycle_end)
+
+
+        if self.left_frame_count >= self.left_cycle_end:
+            self.left_frame_count = 0
+        else:
+            self.left_frame_count += 1
+
+        if self.right_frame_count >= self.right_cycle_end:
+            self.right_frame_count = 0
+        else:
+            self.right_frame_count += 1
         return
