@@ -75,9 +75,103 @@ class shape_Manager():
 
         self.left_frame_count = 0
         self.right_frame_count = 0
-        self.left_cycle_end = 100
-        self.right_cycle_end = 100
+        self.left_cycle_end = 200
+        self.right_cycle_end = 200
         return
+
+    def variable_calc(self, left_v1, left_v1_type, left_v2, left_v2_type, right_v1, right_v1_type, right_v2, right_v2_type, rowcount):
+        """Should turn the two variables from the parameters file into a set
+        of 3 variables: total time of animation, rate of glowing/flashing (how
+        many times it will complete a full cycle per second), and how many full
+        cycles it will complete. The third variable will be calculated from the
+        other two."""
+        self.left_time = 0
+        self.left_rate = 0
+        self.left_number = 0
+        self.right_time = 0
+        self.right_rate = 0
+        self.right_number = 0
+
+        #LEFT VARIABLE 1
+        if re.search("time", left_v1_type, re.IGNORECASE):
+            self.left_time = left_v1
+        elif re.search("number", left_v1_type, re.IGNORECASE):
+            self.left_number = left_v1
+        elif re.search("rate", left_v1_type, re.IGNORECASE):
+            self.left_rate = left_v1
+        else:
+            raise ValueError("Error in row " + str(rowcount) + ": Left Variable 1 Type is unidentified. Ensure that the column's value is time, number, or rate.")
+
+        #LEFT VARIABLE 2
+        #var2 is time
+        if re.search("time", left_v2_type, re.IGNORECASE):
+            if self.left_time:
+                raise ValueError("Error in row " + str(rowcount) + ": Left Variable 1 Type and Left Variable 2 Type are the same. Please ensure that they are two different values from: time, number, or rate.")
+            elif self.left_rate:
+                #time and rate are defined; number is calculated
+                self.left_time = left_v2
+                self.left_number = left_rate * left_time
+            elif self.left_number:
+                #time and number are defined; rate is calculated
+                self.left_time = left_v2
+                self.left_rate = left_number / left_time
+            else:
+                raise ValueError("Error in row " + str(rowcount) + ": Somehow, the first variable didn't get set! Make sure you're providing a valid variable type (time, rate, or number).")
+        #var2 is number
+        elif re.search("number", left_v2_type, re.IGNORECASE):
+            if self.left_number:
+                raise ValueError("Error in row " + str(rowcount) + ": Left Variable 1 Type and Left Variable 2 Type are the same. Please ensure that they are two different values from: time, number, or rate.")
+            elif self.left_rate:
+                #number and rate are defined; time is calculated
+                self.left_number = left_v2
+                self.left_time = left_number/left_rate
+            elif self.left_time:
+                #number and time are defined; rate is calculated
+                self.left_number = left_v2
+                self.left_rate = left_number / left_time
+            else:
+                raise ValueError("Error in row " + str(rowcount) + ": Somehow, the first variable didn't get set! Make sure you're providing a valid variable type (time, rate, or number).")
+        #var2 is rate
+        elif re.search("rate", left_v2_type, re.IGNORECASE):
+            if self.left_rate:
+                raise ValueError("Error in row " + str(rowcount) + ": Left Variable 1 Type and Left Variable 2 Type are the same. Please ensure that they are two different values from: time, number, or rate.")
+            elif self.left_rate:
+                #number and rate are defined; time is calculated
+                self.left_number = left_v2
+                self.left_time = left_number/left_rate
+            elif self.left_time:
+                #number and time are defined; rate is calculated
+                self.left_number = left_v2
+                self.left_rate = left_number / left_time
+            else:
+                raise ValueError("Error in row " + str(rowcount) + ": Somehow, the first variable didn't get set! Make sure you're providing a valid variable type (time, rate, or number).")
+
+        else:
+            raise ValueError("Error in row " + str(rowcount) + ": Left Variable 2 Type is unidentified. Ensure that the column's value is time, number, or rate.")
+
+        #RIGHT VARIABLE 1
+        if re.search("time", right_v1_type, re.IGNORECASE):
+            return
+        elif re.search("number", right_v1_type, re.IGNORECASE):
+            return
+        elif re.search("rate", right_v1_type, re.IGNORECASE):
+            return
+        else:
+            raise ValueError("Error in row " + str(rowcount) + ": Right Variable 1 Type is unidentified. Ensure that the column's value is time, number, or rate.")
+
+        #RIGHT VARIABLE 2
+        if re.search("time", right_v2_type, re.IGNORECASE):
+            return
+        elif re.search("number", right_v2_type, re.IGNORECASE):
+            return
+        elif re.search("rate", right_v2_type, re.IGNORECASE):
+            return
+
+        else:
+            raise ValueError("Error in row " + str(rowcount) + ": Right Variable 2 Type is unidentified. Ensure that the column's value is time, number, or rate.")
+
+
+
 
     def set_glow(self,left_glow, right_glow):
         """Sets the glow values for the trial. 1 means it will glow through a
@@ -107,7 +201,7 @@ class shape_Manager():
         is an rgb tuple."""
         if self.left_glow:
             self.left_gradient = []
-            gr = linear_gradient(left_start_color, left_end_color, 50)
+            gr = linear_gradient(left_start_color, left_end_color, 100)
             for i in range(0, len(gr['r'])):
                 self.left_gradient.append([gr['r'][i], gr['g'][i], gr['b'][i]])
             self.left_gradient = self.left_gradient + self.left_gradient[::-1]
@@ -115,7 +209,7 @@ class shape_Manager():
             self.left_gradient = left_start_color
         if self.right_glow:
             self.right_gradient = []
-            gr = linear_gradient(right_start_color, right_end_color, 50)
+            gr = linear_gradient(right_start_color, right_end_color, 100)
             for i in range(0, len(gr['r'])):
                 self.right_gradient.append([gr['r'][i], gr['g'][i], gr['b'][i]])
             self.right_gradient = self.right_gradient + self.right_gradient[::-1]
