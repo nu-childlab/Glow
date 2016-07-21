@@ -33,9 +33,12 @@ def main():
 	win = visual.Window([scrwidth,scrheight], units='pix', monitor='testMonitor', color=[175,175,175], colorSpace="rgb255")
 
 	framerate = win.getActualFrameRate()
+	print framerate
+	seconds_per_frame = 1/framerate
+	print seconds_per_frame
 
-	#ifi = .0169
-	ifi = 1/framerate
+	# #ifi = .0169
+	# ifi = 1/framerate
 
 	# read parameters file and open response file below
 	parametersfile = open('glowparameters.csv', 'rU')
@@ -59,7 +62,6 @@ def main():
 	 	parameters.append(row)
 
 	random.shuffle(parameters)
-	rowcount = 2
 	sm = shape_Manager(win, sqsize, pos1, pos2, background_color)
 
 	for row in parameters:
@@ -67,14 +69,25 @@ def main():
 		left_start_color = row["Left Start Color"]
 		left_end_color = row["Left End Color"]
 		left_glow = int(row["Left Glow"])
+		left_v1 = float(row["Left Variable 1"])
+		left_v1_type = row["L1 value type"]
+		left_v2 = float(row["Left Variable 2"])
+		left_v2_type = row["L2 value type"]
 
 		right_shape = row["Right Shape"]
 		right_start_color = row["Right Start Color"]
 		right_end_color = row["Right End Color"]
 		right_glow = int(row["Right Glow"])
+		right_v1 = float(row["Right Variable 1"])
+		right_v1_type = row["R1 value type"]
+		right_v2 = float(row["Right Variable 2"])
+		right_v2_type = row["R2 value type"]
 
-		sm.shape_change(left_shape,right_shape, rowcount)
+		row_number = row["Row Number"]
+
+		sm.shape_change(left_shape,right_shape, row_number)
 		sm.set_glow(left_glow, right_glow)
+		sm.variable_calc(left_v1, left_v1_type, left_v2, left_v2_type, right_v1, right_v1_type, right_v2, right_v2_type, row_number)
 		sm.set_colors(left_start_color, right_start_color, left_end_color, right_end_color)
 		sm.generate_gradients(left_start_color, right_start_color, left_end_color, right_end_color)
 
@@ -89,7 +102,6 @@ def main():
 			sm.animate_colors()
 			win.flip()
 
-		rowcount += 1
 
 	sys.exit()
 

@@ -110,11 +110,11 @@ class shape_Manager():
             elif self.left_rate:
                 #time and rate are defined; number is calculated
                 self.left_time = left_v2
-                self.left_number = left_rate * left_time
+                self.left_number = self.left_rate * self.left_time
             elif self.left_number:
                 #time and number are defined; rate is calculated
                 self.left_time = left_v2
-                self.left_rate = left_number / left_time
+                self.left_rate = self.left_number / self.left_time
             else:
                 raise ValueError("Error in row " + str(rowcount) + ": Somehow, the first variable didn't get set! Make sure you're providing a valid variable type (time, rate, or number).")
         #var2 is number
@@ -124,25 +124,25 @@ class shape_Manager():
             elif self.left_rate:
                 #number and rate are defined; time is calculated
                 self.left_number = left_v2
-                self.left_time = left_number/left_rate
+                self.left_time = self.left_number / self.left_rate
             elif self.left_time:
                 #number and time are defined; rate is calculated
                 self.left_number = left_v2
-                self.left_rate = left_number / left_time
+                self.left_rate = self.left_number / self.left_time
             else:
                 raise ValueError("Error in row " + str(rowcount) + ": Somehow, the first variable didn't get set! Make sure you're providing a valid variable type (time, rate, or number).")
         #var2 is rate
         elif re.search("rate", left_v2_type, re.IGNORECASE):
             if self.left_rate:
                 raise ValueError("Error in row " + str(rowcount) + ": Left Variable 1 Type and Left Variable 2 Type are the same. Please ensure that they are two different values from: time, number, or rate.")
-            elif self.left_rate:
-                #number and rate are defined; time is calculated
-                self.left_number = left_v2
-                self.left_time = left_number/left_rate
+            elif self.left_number:
+                #rate and number are defined; time is calculated
+                self.left_rate = left_v2
+                self.left_time = self.left_number / self.left_rate
             elif self.left_time:
-                #number and time are defined; rate is calculated
-                self.left_number = left_v2
-                self.left_rate = left_number / left_time
+                #rate and time are defined; number is calculated
+                self.left_rate = left_v2
+                self.left_number = self.left_rate * self.left_time
             else:
                 raise ValueError("Error in row " + str(rowcount) + ": Somehow, the first variable didn't get set! Make sure you're providing a valid variable type (time, rate, or number).")
 
@@ -151,25 +151,63 @@ class shape_Manager():
 
         #RIGHT VARIABLE 1
         if re.search("time", right_v1_type, re.IGNORECASE):
-            return
+            self.right_time = right_v1
         elif re.search("number", right_v1_type, re.IGNORECASE):
-            return
+            self.right_number = right_v1
         elif re.search("rate", right_v1_type, re.IGNORECASE):
-            return
+            self.right_rate = right_v1
         else:
             raise ValueError("Error in row " + str(rowcount) + ": Right Variable 1 Type is unidentified. Ensure that the column's value is time, number, or rate.")
 
         #RIGHT VARIABLE 2
+        #var2 is time
         if re.search("time", right_v2_type, re.IGNORECASE):
-            return
+            if self.right_time:
+                raise ValueError("Error in row " + str(rowcount) + ": Right Variable 1 Type and Right Variable 2 Type are the same. Please ensure that they are two different values from: time, number, or rate.")
+            elif self.right_rate:
+                #time and rate are defined; number is calculated
+                self.right_time = right_v2
+                self.right_number = self.right_rate * self.right_time
+            elif self.right_number:
+                #time and number are defined; rate is calculated
+                self.right_time = right_v2
+                self.right_rate = self.right_number / self.right_time
+            else:
+                raise ValueError("Error in row " + str(rowcount) + ": Somehow, the first variable didn't get set! Make sure you're providing a valid variable type (time, rate, or number).")
+        #var2 is number
         elif re.search("number", right_v2_type, re.IGNORECASE):
-            return
+            if self.right_number:
+                raise ValueError("Error in row " + str(rowcount) + ": Right Variable 1 Type and Right Variable 2 Type are the same. Please ensure that they are two different values from: time, number, or rate.")
+            elif self.right_rate:
+                #number and rate are defined; time is calculated
+                self.right_number = right_v2
+                self.right_time = self.right_number / self.right_rate
+            elif self.right_time:
+                #number and time are defined; rate is calculated
+                self.right_number = right_v2
+                self.right_rate = self.right_number / self.right_time
+            else:
+                raise ValueError("Error in row " + str(rowcount) + ": Somehow, the first variable didn't get set! Make sure you're providing a valid variable type (time, rate, or number).")
+        #var2 is rate
         elif re.search("rate", right_v2_type, re.IGNORECASE):
-            return
+            if self.right_rate:
+                raise ValueError("Error in row " + str(rowcount) + ": Right Variable 1 Type and Right Variable 2 Type are the same. Please ensure that they are two different values from: time, number, or rate.")
+            elif self.right_number:
+                #rate and number are defined; time is calculated
+                self.right_rate = right_v2
+                self.right_time = self.right_number / self.right_rate
+            elif self.right_time:
+                #rate and time are defined; number is calculated
+                self.right_rate = right_v2
+                self.right_number = self.right_rate * self.right_time
+            else:
+                raise ValueError("Error in row " + str(rowcount) + ": Somehow, the first variable didn't get set! Make sure you're providing a valid variable type (time, rate, or number).")
 
         else:
             raise ValueError("Error in row " + str(rowcount) + ": Right Variable 2 Type is unidentified. Ensure that the column's value is time, number, or rate.")
 
+        print [self.left_rate, self.left_time, self.left_number]
+        print [self.right_rate, self.right_time, self.right_number]
 
 
 
