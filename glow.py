@@ -87,7 +87,9 @@ def main():
 
 		sm.shape_change(left_shape,right_shape, row_number)
 		sm.set_glow(left_glow, right_glow)
-		sm.variable_calc(left_v1, left_v1_type, left_v2, left_v2_type, right_v1, right_v1_type, right_v2, right_v2_type, row_number)
+		runtime = sm.variable_calc(left_v1, left_v1_type, left_v2, left_v2_type, right_v1, right_v1_type, right_v2, right_v2_type, row_number, framerate)
+
+
 		sm.set_colors(left_start_color, right_start_color, left_end_color, right_end_color)
 		sm.generate_gradients(left_start_color, right_start_color, left_end_color, right_end_color)
 

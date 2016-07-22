@@ -79,7 +79,7 @@ class shape_Manager():
         self.right_cycle_end = 200
         return
 
-    def variable_calc(self, left_v1, left_v1_type, left_v2, left_v2_type, right_v1, right_v1_type, right_v2, right_v2_type, rowcount):
+    def variable_calc(self, left_v1, left_v1_type, left_v2, left_v2_type, right_v1, right_v1_type, right_v2, right_v2_type, rowcount, framerate):
         """Should turn the two variables from the parameters file into a set
         of 3 variables: total time of animation, rate of glowing/flashing (how
         many times it will complete a full cycle per second), and how many full
@@ -209,6 +209,16 @@ class shape_Manager():
         print [self.left_rate, self.left_time, self.left_number]
         print [self.right_rate, self.right_time, self.right_number]
 
+        if sm.left_time > sm.right_time:
+			runtime = sm.left_time
+		else:
+			runtime = sm.right_time
+
+        totalframes = round(runtime * framerate)
+
+
+        return runtime
+
 
 
     def set_glow(self,left_glow, right_glow):
@@ -256,10 +266,15 @@ class shape_Manager():
         return
 
     def shape_glow(self, shape, gradient, framecount):
+        """Helper function for animate_colors.
+        Will advance the glowing shapes color by applying the next color
+        in the gradient list."""
         shape.setFillColor(gradient[framecount])
         return
 
     def shape_flash(self, shape, color, framecount, endcycle):
+        """Helper function for animate_colors.
+        Will toggle the opacity at the appropriate time in the cycle."""
         if framecount < round(endcycle/2):
             shape.setOpacity(1)
         else:
