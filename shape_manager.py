@@ -210,9 +210,9 @@ class shape_Manager():
         # print [self.right_rate, self.right_time, self.right_number]
 
         if self.left_time > self.right_time:
-			runtime = self.left_time
+			runtime = sm.left_time
         else:
-			runtime = self.right_time
+			runtime = sm.right_time
 
         totalframes = round(runtime * framerate)
 
@@ -252,6 +252,7 @@ class shape_Manager():
             gr = linear_gradient(left_start_color, left_end_color, 100)
             for i in range(0, len(gr['r'])):
                 self.left_gradient.append([gr['r'][i], gr['g'][i], gr['b'][i]])
+            #Add the inverse gradient so it returns to the original color
             self.left_gradient = self.left_gradient + self.left_gradient[::-1]
         else:
             self.left_gradient = left_start_color
