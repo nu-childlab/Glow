@@ -210,9 +210,9 @@ class shape_Manager():
         # print [self.right_rate, self.right_time, self.right_number]
 
         if self.left_time > self.right_time:
-			runtime = sm.left_time
+			runtime = self.left_time
         else:
-			runtime = sm.right_time
+			runtime = self.right_time
 
         totalframes = round(runtime * framerate)
 
