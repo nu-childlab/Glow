@@ -206,13 +206,13 @@ class shape_Manager():
         else:
             raise ValueError("Error in row " + str(rowcount) + ": Right Variable 2 Type is unidentified. Ensure that the column's value is time, number, or rate.")
 
-        print [self.left_rate, self.left_time, self.left_number]
-        print [self.right_rate, self.right_time, self.right_number]
+        # print [self.left_rate, self.left_time, self.left_number]
+        # print [self.right_rate, self.right_time, self.right_number]
 
-        if sm.left_time > sm.right_time:
-			runtime = sm.left_time
-		else:
-			runtime = sm.right_time
+        if self.left_time > self.right_time:
+			runtime = self.left_time
+        else:
+			runtime = self.right_time
 
         totalframes = round(runtime * framerate)
 
@@ -291,7 +291,6 @@ class shape_Manager():
             self.shape_flash(self.left_active_shape, self.left_gradient, self.left_frame_count, self.left_cycle_end)
 
         if self.right_glow:
-            #print "right glow"
             self.shape_glow(self.right_active_shape, self.right_gradient, self.right_frame_count)
         else:
             self.shape_flash(self.right_active_shape, self.right_gradient, self.right_frame_count, self.right_cycle_end)

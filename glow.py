@@ -33,9 +33,7 @@ def main():
 	win = visual.Window([scrwidth,scrheight], units='pix', monitor='testMonitor', color=[175,175,175], colorSpace="rgb255")
 
 	framerate = win.getActualFrameRate()
-	print framerate
 	seconds_per_frame = 1/framerate
-	print seconds_per_frame
 
 	# #ifi = .0169
 	# ifi = 1/framerate
