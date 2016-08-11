@@ -214,7 +214,10 @@ class shape_Manager():
         else:
 			runtime = self.right_time
 
-        totalframes = round(runtime * framerate)
+        temptotalframes = round(runtime * framerate)
+        # self.left_cycleframes = round(temptotalframes/self.left_number)
+        # self.right_cycleframes = round(temptotalframes/self.right_number)
+        # self.total_frames =
 
 
         return runtime
