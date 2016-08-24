@@ -8,7 +8,20 @@ import re
 import csv
 import math
 import numpy as np
-from psychopy import visual,logging,event,core
+from psychopy import visual,logging,event,core, monitors
+
+def window_creation(fullscreen, background_color):
+	if fullscreen:
+		m = monitors.Monitor(monitors.getAllMonitors()[0])
+		win = visual.Window(units='pix', monitor=m, color=background_color, colorSpace="rgb255", fullscr=True)
+		wsize = win.size
+		scrwidth = wsize[0]
+		scrheight = wsize[1]
+	else:
+		scrwidth = 1280
+		scrheight = 720
+		win = visual.Window([scrwidth,scrheight], units='pix', monitor='testMonitor', color=background_color, colorSpace="rgb255")
+	return win, scrwidth, scrheight
 
 def instructions_screen(win, scrwidth, scrheight, txt):
 	background = visual.Rect(win,lineWidth=0,fillColor="black",size=[scrwidth,scrheight],pos=[0,0],
@@ -67,10 +80,13 @@ def finish_screen(win, scrwidth, scrheight):
 		response=event.waitKeys(keyList=['escape'])[0]
 		break
 
+def getSubjectId():
+	subject = str(raw_input("Subject Number: "))
+	while True:
+		if re.search("^s\d+$", subject):
+			break
+		else:
+			print "Invalid subject id! An id should be an 's' followed by only numbers."
+			subject = str(raw_input("Please enter a valid subject id: "))
 
-def subjectCheck(subject):
-	if re.search("^s\d*$", subject):
-		return subject
-	else:
-		print "Invalid subject id! An id should be an 's' followed by only numbers."
-		return subjectCheck(input("Please enter a valid subject id: "))
+	return subject

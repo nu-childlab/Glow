@@ -8,32 +8,17 @@ import re
 import csv
 import math
 import numpy as np
-from psychopy import visual,logging,event,core
+from psychopy import visual,logging,event,core, monitors
 from color_functions import *
 from shape_manager import shape_Manager
 from python_experiment_functions import *
 
 def main():
-
-	# subject = str(raw_input("Subject Number: "))
-	subject='s999'
-	# subject = subjectCheck(subject)
-	# print subject
-
-	#2560, 1440
-	#1280, 720
-	scrwidth = 1280
-	scrheight = 720
-	#the length of the square's sides; the other shapes are calculated to fit within the square.
-	#the length of the square = the diameter of the circle = the base and height of the triangle.
-	sqsize = scrwidth/5
-	#The positions are from the center of the screen, and mirror each other.
-	pos1 = -scrwidth/5
-	pos2 = -pos1
-	background_color = [175,175,175]
+	#Get subject number
+	subject = getSubjectId()
 
 	# read parameters file and open response file below
-	responsefile = open('glowresponses.csv', 'a')
+	responsefile = open(subject + '_glowresponses.csv', 'ab')
 	responsefields = ['Subject', 'Left Shape', 'Left Start Color', 'Left End Color', 'Left Glow',
 		'Left Time', 'Left Rate', 'Left Number', 'Right Shape',
 		'Right Start Color', 'Right End Color', 'Right Glow', 'Right Time',
@@ -48,8 +33,16 @@ def main():
 		 	parameters.append(row)
 
 	random.shuffle(parameters)
+	fullscreen = True
+	background_color = [175,175,175]
+	win, scrwidth, scrheight = window_creation(fullscreen, background_color)
 
-	win = visual.Window([scrwidth,scrheight], units='pix', monitor='testMonitor', color=[175,175,175], colorSpace="rgb255")
+	#the length of the square's sides; the other shapes are calculated to fit within the square.
+	#the length of the square = the diameter of the circle = the base and height of the triangle.
+	sqsize = scrwidth/5
+	#The positions are from the center of the screen, and mirror each other.
+	pos1 = -scrwidth/5
+	pos2 = -pos1
 	instructions_text = "In this experiment, you will be asked to evaluate sentences relative to short animations. For each animation, you will indicate whether the sentence accurately describes that animation by pressing 'f' for YES or 'j' for NO. You will be reminded of these response keys throughout."
 
 	instructions_screen(win, scrwidth, scrheight, instructions_text)
