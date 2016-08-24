@@ -49,15 +49,11 @@ def main():
 	#create a timer
 	timer = core.Clock()
 
-	#parameters: Left Shape,Left Start Color, Left End Color,Left Glow,Left Variable 1,
-	#L1 time/rate/number,Left Variable 2,L2 time/rate/number,Right Shape,Right Start Color,Right End Color,
-	#Right Glow,Right Variable 1,R1 value type,Right Variable 2,R2 value type
-
-
-
 	parameters = []
-	for row in parametersreader:
-	 	parameters.append(row)
+	with open('glowparameters.csv', 'rU') as f:
+		parametersreader = csv.DictReader(f)
+		for row in parametersreader:
+		 	parameters.append(row)
 
 	random.shuffle(parameters)
 	sm = shape_Manager(win, sqsize, pos1, pos2, background_color)
@@ -88,7 +84,7 @@ def main():
 		runtime = sm.variable_calc(left_v1, left_v1_type, left_v2, left_v2_type, right_v1, right_v1_type, right_v2, right_v2_type, row_number, framerate)
 
 
-		sm.set_colors(left_start_color, right_start_color, left_end_color, right_end_color)
+		#sm.set_colors(left_start_color, right_start_color, left_end_color, right_end_color)
 		sm.generate_gradients(left_start_color, right_start_color, left_end_color, right_end_color)
 
 

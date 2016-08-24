@@ -238,7 +238,10 @@ class shape_Manager():
             self.right_glow = 0
         return
 
-    def set_colors(self, left_start_color, right_start_color, left_end_color, right_end_color):
+    def generate_gradients(self,left_start_color, right_start_color, left_end_color, right_end_color):
+        """Generates color gradients for the left and right shapes.
+        The gradient variables become lists of lists, where each inner list
+        is an rgb tuple."""
         self.left_start_color = hex_to_RGB(left_start_color)
         self.right_start_color = hex_to_RGB(right_start_color)
         self.left_end_color = hex_to_RGB(left_end_color)
@@ -246,10 +249,6 @@ class shape_Manager():
         self.left_active_shape.fillColor = hex_to_RGB(left_start_color)
         self.right_active_shape.fillColor = hex_to_RGB(right_start_color)
 
-    def generate_gradients(self,left_start_color, right_start_color, left_end_color, right_end_color):
-        """Generates color gradients for the left and right shapes.
-        The gradient variables become lists of lists, where each inner list
-        is an rgb tuple."""
         if self.left_glow:
             self.left_gradient = []
             gr = linear_gradient(left_start_color, left_end_color, 100)
