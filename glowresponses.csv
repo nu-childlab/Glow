@@ -1,0 +1,15 @@
+Left Shape,Left Start Color,Left End Color,Left Glow,Left Time,Left Rate,Left Number,Right Shape,Right Start Color,Right End Color,Right Glow,Right Time,Right Rate,Right Number,Color,Response,RT
+circle,#0000b3,#4d4dff,1,5.0,1.0,5.0,triangle,#ff0000,#ff7676,0,2.0,1.5,3.0,blue,j,2.812358856201172
+square,#008000,#7676ff,1,2.0,1.0,2.0,circle,#ff0000,#ff0000,0,1.5,2.0,3.0,green,j,1.5297410488128662
+Subject,Left Shape,Left Start Color,Left End Color,Left Glow,Left Time,Left Rate,Left Number,Right Shape,Right Start Color,Right End Color,Right Glow,Right Time,Right Rate,Right Number,Color,Response,RT
+Subject,Left Shape,Left Start Color,Left End Color,Left Glow,Left Time,Left Rate,Left Number,Right Shape,Right Start Color,Right End Color,Right Glow,Right Time,Right Rate,Right Number,Color,Response,RT
+Subject,Left Shape,Left Start Color,Left End Color,Left Glow,Left Time,Left Rate,Left Number,Right Shape,Right Start Color,Right End Color,Right Glow,Right Time,Right Rate,Right Number,Color,Response,RT
+s999,circle,#0000b3,#4d4dff,1,5.0,1.0,5.0,triangle,#ff0000,#ff7676,0,2.0,1.5,3.0,blue,j,2.832484006881714
+s999,square,#008000,#7676ff,1,2.0,1.0,2.0,circle,#ff0000,#ff0000,0,1.5,2.0,3.0,green,j,0.39858007431030273
+Subject,Left Shape,Left Start Color,Left End Color,Left Glow,Left Time,Left Rate,Left Number,Right Shape,Right Start Color,Right End Color,Right Glow,Right Time,Right Rate,Right Number,Color,Response,RT
+Subject,Left Shape,Left Start Color,Left End Color,Left Glow,Left Time,Left Rate,Left Number,Right Shape,Right Start Color,Right End Color,Right Glow,Right Time,Right Rate,Right Number,Color,Response,RT
+s999,square,#008000,#7676ff,1,2.0,1.0,2.0,circle,#ff0000,#ff0000,0,1.5,2.0,3.0,green,j,3.108731985092163
+s999,circle,#0000b3,#4d4dff,1,5.0,1.0,5.0,triangle,#ff0000,#ff7676,0,2.0,1.5,3.0,blue,j,189.62769103050232
+Subject,Left Shape,Left Start Color,Left End Color,Left Glow,Left Time,Left Rate,Left Number,Right Shape,Right Start Color,Right End Color,Right Glow,Right Time,Right Rate,Right Number,Color,Response,RT
+s999,circle,#0000b3,#4d4dff,1,5.0,1.0,5.0,triangle,#ff0000,#ff7676,0,2.0,1.5,3.0,blue,j,8.297709941864014
+s999,square,#008000,#7676ff,1,2.0,1.0,2.0,circle,#ff0000,#ff0000,0,1.5,2.0,3.0,green,j,4.9824299812316895

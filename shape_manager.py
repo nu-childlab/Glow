@@ -75,8 +75,6 @@ class shape_Manager():
 
         self.left_frame_count = 0
         self.right_frame_count = 0
-        self.left_cycle_end = 200
-        self.right_cycle_end = 200
         return
 
     def variable_calc(self, left_v1, left_v1_type, left_v2, left_v2_type, right_v1, right_v1_type, right_v2, right_v2_type, rowcount, framerate):
@@ -206,23 +204,27 @@ class shape_Manager():
         else:
             raise ValueError("Error in row " + str(rowcount) + ": Right Variable 2 Type is unidentified. Ensure that the column's value is time, number, or rate.")
 
-        # print [self.left_rate, self.left_time, self.left_number]
-        # print [self.right_rate, self.right_time, self.right_number]
+        # if self.left_time > self.right_time:
+		# 	runtime = self.left_time
+        # else:
+		# 	runtime = self.right_time
 
-        if self.left_time > self.right_time:
-			runtime = self.left_time
-        else:
-			runtime = self.right_time
+        runtime = max(self.left_time, self.right_time)
 
         temptotalframes = round(runtime * framerate)
-        # self.left_cycleframes = round(temptotalframes/self.left_number)
-        # self.right_cycleframes = round(temptotalframes/self.right_number)
-        # self.total_frames =
+        #The total number of frames in the process for these shapes.
+        self.left_totalframes = int(round(self.left_time*framerate))
+        self.right_totalframes = int(round(self.right_time*framerate))
 
+        #The number of frames in one cycle (starting and ending at the same color) of a glow or flash.
+        #The weird half-and-full cycle calculations are because I want to make sure they all match up with rounding,
+        #since they're used for interating through for loops and maintaining the timing.
+        self.left_halfcycleframes = int(round((self.left_totalframes/self.left_number)/2))
+        self.right_halfcycleframes = int(round((self.right_totalframes/self.right_number)/2))
+        self.left_cycleframes = self.left_halfcycleframes*2
+        self.right_cycleframes = self.right_halfcycleframes*2
 
         return runtime
-
-
 
     def set_glow(self,left_glow, right_glow):
         """Sets the glow values for the trial. 1 means it will glow through a
@@ -251,7 +253,7 @@ class shape_Manager():
 
         if self.left_glow:
             self.left_gradient = []
-            gr = linear_gradient(left_start_color, left_end_color, 100)
+            gr = linear_gradient(left_start_color, left_end_color, self.left_halfcycleframes)
             for i in range(0, len(gr['r'])):
                 self.left_gradient.append([gr['r'][i], gr['g'][i], gr['b'][i]])
             #Add the inverse gradient so it returns to the original color
@@ -260,7 +262,7 @@ class shape_Manager():
             self.left_gradient = left_start_color
         if self.right_glow:
             self.right_gradient = []
-            gr = linear_gradient(right_start_color, right_end_color, 100)
+            gr = linear_gradient(right_start_color, right_end_color, self.right_halfcycleframes)
             for i in range(0, len(gr['r'])):
                 self.right_gradient.append([gr['r'][i], gr['g'][i], gr['b'][i]])
             self.right_gradient = self.right_gradient + self.right_gradient[::-1]
@@ -284,28 +286,31 @@ class shape_Manager():
             shape.setOpacity(0)
         return
 
-    def animate_colors(self):
+    def animate_colors(self, count):
         """Makes one step/frame in the color-changing animation.
         It increments the shapes and changes their color according to the
         gradient or whether it should be flashing or not."""
-        if self.left_glow:
-            self.shape_glow(self.left_active_shape, self.left_gradient, self.left_frame_count)
-        else:
-            self.shape_flash(self.left_active_shape, self.left_gradient, self.left_frame_count, self.left_cycle_end)
+        #If it's not done with the whole animation
+        if count<self.left_totalframes:
+            #Either glow or flash the shape
+            if self.left_glow:
+                self.shape_glow(self.left_active_shape, self.left_gradient, self.left_frame_count)
+            else:
+                self.shape_flash(self.left_active_shape, self.left_gradient, self.left_frame_count, self.left_cycleframes)
+        if count<self.right_totalframes:
+            if self.right_glow:
+                self.shape_glow(self.right_active_shape, self.right_gradient, self.right_frame_count)
+            else:
+                self.shape_flash(self.right_active_shape, self.right_gradient, self.right_frame_count, self.right_cycleframes)
 
-        if self.right_glow:
-            self.shape_glow(self.right_active_shape, self.right_gradient, self.right_frame_count)
-        else:
-            self.shape_flash(self.right_active_shape, self.right_gradient, self.right_frame_count, self.right_cycle_end)
-
-
-        if self.left_frame_count >= self.left_cycle_end:
+        self.left_frame_count += 1
+        self.right_frame_count += 1
+        if self.left_frame_count >= self.left_cycleframes:
             self.left_frame_count = 0
-        else:
-            self.left_frame_count += 1
-
-        if self.right_frame_count >= self.right_cycle_end:
+        if self.right_frame_count >= self.right_cycleframes:
             self.right_frame_count = 0
-        else:
-            self.right_frame_count += 1
-        return
+
+    def shape_clear(self):
+        """Makes the active shapes stop being drawn"""
+        self.left_active_shape.setAutoDraw(0)
+        self.right_active_shape.setAutoDraw(0)

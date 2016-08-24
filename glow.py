@@ -11,10 +11,12 @@ import numpy as np
 from psychopy import visual,logging,event,core
 from color_functions import *
 from shape_manager import shape_Manager
+from python_experiment_functions import *
 
 def main():
 
 	# subject = str(raw_input("Subject Number: "))
+	subject='s999'
 	# subject = subjectCheck(subject)
 	# print subject
 
@@ -30,24 +32,14 @@ def main():
 	pos2 = -pos1
 	background_color = [175,175,175]
 
-	win = visual.Window([scrwidth,scrheight], units='pix', monitor='testMonitor', color=[175,175,175], colorSpace="rgb255")
-
-	framerate = win.getActualFrameRate()
-	seconds_per_frame = 1/framerate
-
-	# #ifi = .0169
-	# ifi = 1/framerate
-
 	# read parameters file and open response file below
-	parametersfile = open('glowparameters.csv', 'rU')
-	parametersreader = csv.DictReader(parametersfile)
-	# responsefile = open('glowresponses.csv', 'wb')
-	# responsefields = ['Response', 'RT']
-	# responsewriter = csv.DictWriter(responsefile, responsefields)
-	# responsewriter.writeheader()
-
-	#create a timer
-	timer = core.Clock()
+	responsefile = open('glowresponses.csv', 'a')
+	responsefields = ['Subject', 'Left Shape', 'Left Start Color', 'Left End Color', 'Left Glow',
+		'Left Time', 'Left Rate', 'Left Number', 'Right Shape',
+		'Right Start Color', 'Right End Color', 'Right Glow', 'Right Time',
+		'Right Rate', 'Right Number', 'Color','Response', 'RT']
+	responsewriter = csv.DictWriter(responsefile, responsefields)
+	responsewriter.writeheader()
 
 	parameters = []
 	with open('glowparameters.csv', 'rU') as f:
@@ -56,6 +48,12 @@ def main():
 		 	parameters.append(row)
 
 	random.shuffle(parameters)
+
+	win = visual.Window([scrwidth,scrheight], units='pix', monitor='testMonitor', color=[175,175,175], colorSpace="rgb255")
+	instructions_text = "In this experiment, you will be asked to evaluate sentences relative to short animations. For each animation, you will indicate whether the sentence accurately describes that animation by pressing 'f' for YES or 'j' for NO. You will be reminded of these response keys throughout."
+
+	instructions_screen(win, scrwidth, scrheight, instructions_text)
+
 	sm = shape_Manager(win, sqsize, pos1, pos2, background_color)
 
 	for row in parameters:
@@ -77,37 +75,34 @@ def main():
 		right_v2 = float(row["Right Variable 2"])
 		right_v2_type = row["R2 value type"]
 
+		color = row["Color"]
+
 		row_number = row["Row Number"]
+		framerate = win.getActualFrameRate()
+		seconds_per_frame = 1/framerate
 
 		sm.shape_change(left_shape,right_shape, row_number)
 		sm.set_glow(left_glow, right_glow)
 		runtime = sm.variable_calc(left_v1, left_v1_type, left_v2, left_v2_type, right_v1, right_v1_type, right_v2, right_v2_type, row_number, framerate)
 
-
-		#sm.set_colors(left_start_color, right_start_color, left_end_color, right_end_color)
 		sm.generate_gradients(left_start_color, right_start_color, left_end_color, right_end_color)
 
 
 		framecount = 0
-		# while not event.getKeys(keyList=['q']):
-		#
-		# 	win.flip()
-		# 	framecount += 1
-		temptime = max(sm.right_cycle_end, sm.left_cycle_end)
+
+		temptime = max(sm.right_totalframes, sm.left_totalframes)
 		for x in range(0,temptime):
-			sm.animate_colors()
+			sm.animate_colors(x)
 			win.flip()
+		sm.shape_clear()
+		r = response_screen(win, scrwidth, scrheight, 'The '+left_shape+' is more '+color+' than the '+right_shape+' is.', 'Press f for yes and j for no', ['f','j'])
+		responsewriter.writerow({'Subject':subject,'Left Shape':left_shape, 'Left Start Color':left_start_color, 'Left End Color':left_end_color, 'Left Glow':left_glow,
+			'Left Time':sm.left_time, 'Left Rate':sm.left_rate, 'Left Number':sm.left_number, 'Right Shape':right_shape,
+			'Right Start Color':right_start_color, 'Right End Color':right_end_color, 'Right Glow':right_glow, 'Right Time':sm.right_time,
+			'Right Rate':sm.right_rate, 'Right Number':sm.right_number, 'Color':color,'Response':r[0], 'RT':r[1]})
 
-
+	responsefile.close()
 	sys.exit()
-
-
-def subjectCheck(subject):
-	if re.search("^s\d*$", subject):
-		return subject
-	else:
-		print "Invalid subject id! An id should be an 's' followed by only numbers."
-		return subjectCheck(input("Please enter a valid subject id: "))
 
 
 
