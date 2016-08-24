@@ -102,6 +102,7 @@ def main():
 			'Right Rate':sm.right_rate, 'Right Number':sm.right_number, 'Color':color,'Response':r[0], 'RT':r[1]})
 
 	responsefile.close()
+	finish_screen(win, scrwidth, scrheight)
 	sys.exit()
 
 
